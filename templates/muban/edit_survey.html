@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>add_survey</title>
+    <title>edit_survey</title>
     <script src="/static/js/jquery-3.2.1.min.js"></script>
     <script src="/static/js/jquery.cookie.js"></script>
     <link href="/static/css/style.css" rel="stylesheet" type="text/css"/>
@@ -17,7 +17,7 @@
     <ul class="placeul">
         <li><a href="#">首页</a></li>
         <li><a href="survey_list.html">问卷调查</a></li>
-        <li><a href="#">新增问卷</a></li>
+        <li><a href="#">修改问卷</a></li>
     </ul>
 </div>
 
@@ -28,26 +28,65 @@
         <input name="" type="button"  value="保存" class="pull-right btn btn-primary save_survey"/>
         <input name="" type="button"  value="添加" class="pull-right btn btn-success add_question" style="margin-right: 5px ">
     </div>
-    <ul class="forminfo">
+    <ul class="forminfo" survey_id={{ survey_id }}>
         {% csrf_token %}
-        <div class="question_box">
-            <a class="del_question"><span class="glyphicon glyphicon-remove pull-right"></span></a>
-            <li><label>问题：</label><input name="" type="text" placeholder="请输入问题名称" class="dfinput question_name"/></li>
-            <li>
-                <label>类型：</label>
-                <select name="" id="" class="dfinput question_type">
-                    <option value="1">打分（1~10分）</option>
-                    <option value="2">单选</option>
-                    <option value="3">建议</option>
-                </select>
-                <span class="question_type_help"></span>
-            </li>
-            <li>
-                <ul class="option-ul">
-                </ul>
-            </li>
-            <hr>
-        </div>
+        {% for question in question_list %}
+            <div class="question_box">
+                <a class="del_question"><span class="glyphicon glyphicon-remove pull-right"></span></a>
+                <li>{{ question.form.name.label_tag }}{{ question.form.name }}</li>
+                <li>
+                    {{ question.form.type.label_tag }}
+                    {{ question.form.type }}
+                    <span class="question_type_help"></span>
+                </li>
+                <li>
+                    <ul class="option-ul">
+                    </ul>
+                </li>
+                <hr>
+            </div>
+
+        {% empty %}
+            <div class="question_box">
+                <a class="del_question"><span class="glyphicon glyphicon-remove pull-right"></span></a>
+                <li><label>问题：</label><input name="" type="text" placeholder="请输入问题名称" class="dfinput question_name"/></li>
+                <li>
+                    <label>类型：</label>
+                    <select name="" id="" class="dfinput question_type">
+                        <option value="1">打分（1~10分）</option>
+                        <option value="2">单选</option>
+                        <option value="3">建议</option>
+                    </select>
+                    <span class="question_type_help"></span>
+                </li>
+                <li>
+                    <ul class="option-ul">
+                    </ul>
+                </li>
+                <hr>
+            </div>
+        {% endfor %}
+
+
+
+{#        <div class="question_box">#}
+{#            <a class="del_question"><span class="glyphicon glyphicon-remove pull-right"></span></a>#}
+{#            <li><label>问题：</label><input name="" type="text" placeholder="请输入问题名称" class="dfinput question_name"/></li>#}
+{#            <li>#}
+{#                <label>类型：</label>#}
+{#                <select name="" id="" class="dfinput question_type">#}
+{#                    <option value="1">打分（1~10分）</option>#}
+{#                    <option value="2">单选</option>#}
+{#                    <option value="3">建议</option>#}
+{#                </select>#}
+{#                <span class="question_type_help"></span>#}
+{#            </li>#}
+{#            <li>#}
+{#                <ul class="option-ul">#}
+{#                </ul>#}
+{#            </li>#}
+{#            <hr>#}
+{#        </div>#}
 
     </ul>
 
@@ -64,6 +103,8 @@
             var option = '<li><ul class="option-ul"></ul></li>';
             var html_str = '<div class="question_box">'+a_str+name+type+option+'<hr></div>'
             $(".forminfo").append(html_str)
+
+{#            $(".forminfo").append('<div class="question_box"><li>{{ questionForm.name }}</li></div>')#}
         });
 
         $(".forminfo").on('click',".del_question",function () {
@@ -86,7 +127,7 @@
              $(this).parent().parent().next().find(".option-ul").append(li_str)
         });
 
-
+        //保存修改
         $(".save_survey").click(function () {
             var data = [];
             var flag = true;
@@ -118,11 +159,15 @@
             if(flag){
                 $.ajax({
                     headers: {"X-CSRFToken": $.cookie('csrftoken')},
-                    url:'/add_option/',
+                    url:'/deal_edit/?survey_id={{ survey_id }}',
                     type:'post',
                     data:{'data':jsonString},//传一个json字符串
                     success:function (ret) {
                         console.log(ret)
+                        if(ret.success){
+                            alert('修改成功！')
+                            window.location.href = "/survey_list/"
+                        }
                     }
                 })
             }

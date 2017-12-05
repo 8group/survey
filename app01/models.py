@@ -42,9 +42,9 @@ class Question(models.Model):
     name = models.CharField(max_length=64)
     surveyinfo = models.ForeignKey(to=SurveyInfo)
     question_types = (
-        (1,'打分'),
+        (1,'打分（1~10分）'),
         (2,'单选'),
-        (3,'评价'),
+        (3,'评分'),
     )
     type = models.IntegerField(choices=question_types)
 

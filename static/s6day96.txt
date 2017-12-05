@@ -1,0 +1,285 @@
+s6day96
+
+今日内容：
+	1. 问卷
+		- 问卷列表
+		- 问题列表思路
+	2. Git
+
+今日内容：
+	1. 问卷
+		如果获取的数据不是直接可以展示的结构
+			方案一：
+				循环一次，生成数据
+			方案二：
+				利用yield来实现
+				def test(request):
+					user_list = [
+						{'id':1,'name':'alex','age':19},
+						{'id':2,'name':'eric','age':18},
+					]
+
+					def inner(arg):
+						for item in arg:
+							yield {'id':item['id'], 'name':item['name'],'age':item['id']+item['age']}
+
+
+					return render(request,'test.html',{'user_list':inner(user_list)})
+			方案三：
+				利用类、__iter__、yield实现
+				
+				class Foo(object):
+					def __init__(self,data):
+						self.data = data
+
+					def __iter__(self):
+						for item in self.data:
+							yield item
+
+				def test(request):
+					user_list = [
+						{'id':1,'name':'alex','age':19},
+						{'id':2,'name':'eric','age':18},
+					]
+					obj = Foo(user_list)
+					return render(request,'test.html',{'user_list':obj})
+				
+	2. 问题列表思路 
+		- 基于Form组件来实现【yield】
+		
+	3. Git
+		- 版本控制，各行各业都需要
+		
+		- 版本控制工具
+			- svn
+			- git
+		
+		- git，软件帮助使用者进行版本的管理
+		
+		- 一个创业者的故事：李路宁
+			
+		  阶段一：
+				
+				git init 
+			   
+			    git config --global user.email "you@example.com"
+				git config --global user.name "Your Name"
+
+				
+				git add .
+				git commit -m '描述信息'
+				
+				git add .
+				git commit -m '描述信息'
+				
+				git add .
+				git commit -m '描述信息'
+				
+				git log 
+				git reset --hard asdfooiusdfsdfadf
+				
+				git reflog
+				git reset --hard asdfooiusdfsdfadf
+			   
+		  阶段二：
+				
+				问题： 开发直播功能（一周开发完成），要紧急修复bug
+				
+				解决方法一：
+					git stash 将当前工作区的修改过的代码暂存到某个地方中
+					
+					按照原来代码继续开发...
+					git add .
+					git commit -m '修改完成'
+					
+					
+					git stash pop
+						- 不产生冲突
+						- 产生冲突，手动去解决
+					
+		
+		
+	
+					git stash               将当前工作区所有修改过的内容存储到“某个地方”，将工作区还原到当前版本未修改过的状态
+					git stash list          查看“某个地方”存储的所有记录
+					git stash clear         清空“某个地方”
+					git stash pop            将第一个记录从“某个地方”重新拿到工作区（可能有冲突）
+					git stash apply  编号    将指定编号记录从“某个地方”重新拿到工作区（可能有冲突） 
+					git stash drop  编号    ，删除指定编号的记录
+						
+	
+	
+				解决方法二：分支
+					
+					bug
+					
+					master分支
+					
+					dev分支
+				
+				
+					git branch dev 
+					
+					git branch -d dev 
+					
+					git checkout dev 
+				
+				
+					git merge dev   分支合并
+					
+					
+					修复Bug流程：
+						git branch dev 
+						git checkout dev 
+						
+						# 写代码
+						git add .
+						git commit -m 'xxx'
+						
+						git checkout master 
+						git branch bug 
+						git chekcout bug 
+						
+						# 修复bug 
+						git add .
+						git commit -m '紧急修复bug'
+						
+						git checkout master 
+						git merge bug 
+						
+						git branch -d bug 
+						
+						git checkout dev 
+						# 继续开发
+						
+			阶段三：三里屯和于辛庄
+				云端需求一个存放代码的地方：
+					公共：
+						- github，做代码托管
+						- 码云，做代码托管
+						- csdn code，做代码托管
+					内部搭建：
+						- gitlab
+				
+				家里：
+					
+					git add .
+					git commit -m 'xx'
+					
+					git remote add origin https://github.com/WuPeiqi/greenlu.git
+					
+					git push origin master 
+					
+				公司：
+					
+					# 新公司第一次获取代码
+					
+						git clone https://github.com/WuPeiqi/greenlu.git
+							
+						
+						git init 
+						git remote add origin https://github.com/WuPeiqi/greenlu.git
+						git pull origin master 
+						
+						
+						
+						git init 
+						git remote add origin https://github.com/WuPeiqi/greenlu.git
+						git fetch origin master 
+						git merge origin/master 
+					
+					# 日后
+						git pull origin master 
+						
+						
+						git fetch origin master 
+						git merge origin/master 
+						
+						
+						
+					#   本地修改问题，add，提交
+					
+
+今日作业：
+	1. 问题列表：使用三种方式实现
+		- 没有问题
+		- 有问题
+	2. github
+		- master
+		- dev 
+	
+		
+						
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			

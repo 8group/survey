@@ -21,8 +21,9 @@ from app01 import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
-    url(r'^survey_list.html',views.survey_list),
+    url(r'^survey_list/$',views.survey_list),
+    url(r'^edit_survey/$',views.edit_survey),
+    url(r'^deal_edit',views.deal_edit),
     url(r'^(?P<page>.*).html',views.deal_page),
-
 
 ]
