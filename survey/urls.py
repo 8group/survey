@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
     url(r'^survey_list/$',views.survey_list),
+    url(r'^add_survey/$',views.add_survey),
     url(r'^edit_survey/$',views.edit_survey),
     url(r'^deal_edit',views.deal_edit),
     url(r'^(?P<page>.*).html',views.deal_page),

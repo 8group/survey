@@ -16,7 +16,7 @@
     <span>位置：</span>
     <ul class="placeul">
         <li><a href="#">首页</a></li>
-        <li><a href="survey_list.html">问卷调查</a></li>
+        <li><a href="/survey_list/">问卷调查</a></li>
         <li><a href="#">新增问卷</a></li>
     </ul>
 </div>
@@ -24,114 +24,20 @@
 <div class="formbody">
 
     <div class="formtitle">
-        <span>问题列表</span>
-        <input name="" type="button"  value="保存" class="pull-right btn btn-primary save_survey"/>
-        <input name="" type="button"  value="添加" class="pull-right btn btn-success add_question" style="margin-right: 5px ">
+        <span>问卷信息</span>
     </div>
-    <ul class="forminfo">
+    <form action="/add_survey/" method="post"  class="col-md-6">
         {% csrf_token %}
-        <div class="question_box">
-            <a class="del_question"><span class="glyphicon glyphicon-remove pull-right"></span></a>
-            <li><label>问题：</label><input name="" type="text" placeholder="请输入问题名称" class="dfinput question_name"/></li>
-            <li>
-                <label>类型：</label>
-                <select name="" id="" class="dfinput question_type">
-                    <option value="1">打分（1~10分）</option>
-                    <option value="2">单选</option>
-                    <option value="3">建议</option>
-                </select>
-                <span class="question_type_help"></span>
-            </li>
-            <li>
-                <ul class="option-ul">
-                </ul>
-            </li>
-            <hr>
-        </div>
-
-    </ul>
+        <ul class="forminfo">
+            <li>{{ survey_form.title.label_tag }}{{ survey_form.title }}</li>
+            <li>{{ survey_form.cls.label_tag }}{{ survey_form.cls }}</li>
+            <li><input name="" type="submit"  value="保存" class="btn btn-primary"/></li>
+        </ul>
+    </form>
 
 </div>
 </body>
 <script>
-    $(function () {
-
-        //添加问题
-        $(".add_question").click(function () {
-            var a_str = '<a class="del_question"><span class="glyphicon glyphicon-remove pull-right"></span></a>'
-            var name = '<li><label>问题：</label><input name="" type="text" placeholder="请输入问题名称" class="dfinput question_name"/></li>'
-            var type = '<li><label>类型：</label><select name="" id="" class="dfinput question_type"><option value="1">打分（1~10分）</option><option value="2">单选</option> <option value="3">建议</option> </select> <span class="question_type_help"></span> </li>'
-            var option = '<li><ul class="option-ul"></ul></li>';
-            var html_str = '<div class="question_box">'+a_str+name+type+option+'<hr></div>'
-            $(".forminfo").append(html_str)
-        });
-
-        $(".forminfo").on('click',".del_question",function () {
-            $(this).parent().remove()
-        });
-
-        //改变问题类型
-        $(".forminfo").on('change',".question_type",function () {
-            if($(this).val()==2){
-                $(this).parent().find(".question_type_help").html("<a class='add_option'>添加选项</a>");
-            }else{
-                $(this).parent().find(".question_type_help").html("");
-                $(this).parent().next().find(".option-ul").html("")
-            }
-        });
-
-        //添加选项
-         $(".forminfo").on('click',".add_option",function () {
-             var li_str = '<li>内容：<input type="text" class=" dfinput-sm option_value">分值：<input type="text" class="dfinput-sm option_key"><a class="del_option"><span class="glyphicon glyphicon-remove pull-right"></span></a></li>';
-             $(this).parent().parent().next().find(".option-ul").append(li_str)
-        });
-
-
-        $(".save_survey").click(function () {
-            var data = [];
-            var flag = true;
-            $(".forminfo .question_box").each(function(k,v){
-                var question_name = $(this).find(".question_name").val();
-                var question_type = $(this).find(".question_type").val();
-                var options = [];
-
-                if(question_type==2){
-                    if(!$(this).find(".option-ul li").length){
-                        alert("单选类型问题必须有选项！");
-                        flag = false
-                    }
-                    $(this).find(".option-ul li").each(function (k,v) {
-                        var option_key = $(v).find(".option_key").val().toString();
-                        var option_value = $(v).find(".option_value").val();
-                        options.push({option_key:option_key,option_value:option_value})
-                    })
-                }
-                data.push({
-                    'question_name':question_name,
-                    'question_type':question_type,
-                    'options':options
-                });
-
-            });
-            console.log(data)
-            var jsonString = JSON.stringify(data)
-            if(flag){
-                $.ajax({
-                    headers: {"X-CSRFToken": $.cookie('csrftoken')},
-                    url:'/add_option/',
-                    type:'post',
-                    data:{'data':jsonString},//传一个json字符串
-                    success:function (ret) {
-                        console.log(ret)
-                    }
-                })
-            }
-        })
-
-
-
-
-    })
 
 </script>
 </html>

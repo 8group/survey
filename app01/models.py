@@ -28,7 +28,7 @@ class SurveyInfo(models.Model):
     """
     title = models.CharField(max_length=64)
     cls = models.ForeignKey(to=Cls)
-    creator = models.ForeignKey(to=UserInfo)
+    creator = models.ForeignKey(to=UserInfo,null=True,blank=True)
 
     def __str__(self):
         return self.title
@@ -42,9 +42,9 @@ class Question(models.Model):
     name = models.CharField(max_length=64)
     surveyinfo = models.ForeignKey(to=SurveyInfo)
     question_types = (
-        (1,'打分（1~10分）'),
-        (2,'单选'),
-        (3,'评分'),
+        (1, '打分（1~10分）'),
+        (2, '单选'),
+        (3, '评论'),
     )
     type = models.IntegerField(choices=question_types)
 
