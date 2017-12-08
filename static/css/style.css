@@ -318,6 +318,14 @@ h2{font-weight:normal;}
 .enter:hover{color:#fff; background:#d98c1d;}
 .clear{clear:both;}
 
+/*时间控件*/
+.form_datetime{
+    display: inline-block;
+}
+/*.mytablehover td:hover{*/
+    /*background: #3eafe0;*/
+/*}*/
+
 /*seachform*/
 .seachform{ height:42px;}
 .seachform li{float:left; margin-right:15px;}

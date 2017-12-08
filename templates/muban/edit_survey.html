@@ -32,7 +32,7 @@
         {% for question in question_list %}
             <div class="question_box" pk="{{ question.id }}">
                 <a class="del_question"><span class="glyphicon glyphicon-remove pull-right"></span></a>
-                <li>{{ question.form.name.label_tag }}{{ question.form.name }}</li>
+                <li>{{ question.form.name.label_tag }}{{ question.form.name }} <span id="err"></span></li>
                 <li>
                     {{ question.form.type.label_tag }}{{ question.form.type }}<span class="question_type_help {{ question.option_class }}"><a class='add_option'>添加选项</a></span>
                 </li>
@@ -131,8 +131,8 @@
                 });
 
             });
-            console.log(data)
-            var jsonString = JSON.stringify(data)
+            console.log(data);
+            var jsonString = JSON.stringify(data);
             if(flag){
                 $.ajax({
                     headers: {"X-CSRFToken": $.cookie('csrftoken')},
@@ -140,10 +140,13 @@
                     type:'post',
                     data:{'data':jsonString},//传一个json字符串
                     success:function (ret) {
-                        console.log(ret)
+                        console.log(ret);
                         if(ret.success){
-                            alert('修改成功！')
+                            alert('修改成功！');
                             window.location.href = "/survey_list/"
+                        }else{
+                            $(".forminfo").append("输入有误");
+{#                            console.log()#}
                         }
                     }
                 })

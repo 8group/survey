@@ -2,6 +2,7 @@ from django.forms import Form,fields,ModelForm
 from django.forms import widgets as wd
 from app01 import models
 
+
 class QuestionForm(Form):
     name = fields.CharField(
         required=True,  # 表示此项必填
@@ -29,7 +30,7 @@ class QuestionForm(Form):
     def __init__(self, *args, **kwargs):
         super(QuestionForm, self).__init__(*args, **kwargs)
 
-        self.fields['type'].widget.choices = models.Question.question_types
+        self.fields['type'].choices = models.Question.question_types
         if kwargs.get('initial'):
             self.fields['type'].initial = kwargs['initial']['type']
             self.fields['name'].widget.attrs['value'] = kwargs['initial']['value']

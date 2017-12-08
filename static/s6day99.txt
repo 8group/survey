@@ -1,0 +1,114 @@
+s6day99
+
+今日内容：
+	1. 问卷
+		- 创建问题
+		- 学生回答问题
+		
+	2. 设计会议室预定
+	
+内容详细：
+	1. 问卷
+	
+	2. 生成学生看的问卷页面
+		- 本班学生才可以看
+		- 已经参加过的不可再次访问
+		- 看到：
+			models.Question.objects.filter(naire_id=qn_id)
+			
+			- 路宁的长相打分？
+			   1  2  3 .. 10
+			- 路宁女朋友一些建议？
+				...
+			- 路宁选择帽子颜色？
+				A. 绿色    B.翠绿
+				C. 墨绿    D.深绿色
+		
+	
+	
+	   PS: postman
+	   
+	今日内容梳理：
+		1. 集合操作
+		
+		2. 创建类的两种方式：
+			
+			class Foo(object):
+				x1 = 8
+				
+				def func(self,arg):
+					return arg
+			
+			Foo = type('Foo',(object,),{'x1':8,'func':lambda self,arg:arg})
+			
+		
+			# 应用创建Form
+			
+		3. Form前端循环
+			class LoginForm(Form):
+				name = ...
+				pwd = ...
+				
+			
+			def func(request):
+				form = LoginForm()
+				
+				return ren....
+				
+				
+			<div>
+				{{ form.name }} {{for.errors.name.0}}
+				{{ form.pwd }} {{for.errors.pwd.0}}
+			</div>
+			
+			<div>
+				{% for fd in form %}
+					{{fd.label}}  {{fd}}  {{fd.errors.0}}
+				{% endfor %}
+			</div>
+			
+		4. 自定义Form验证规则
+			def func(val):
+				if len(val) < 15:
+					raise ValidationError('你太短了')
+					
+			
+			class LoginForm(Form):
+				name1 = fields.CharField(label='xxx', widget=widgets.Textarea, validators=[RegexValidator(regex=""),])
+				name2 = fields.RegexField(label='xxx', widget=widgets.Textarea, regex="xxx")
+				
+				name3 = fields.CharField(label=que.caption, widget=widgets.Textarea, validators=[func, ])
+				
+				def clean_name1(self,val):
+					return val 
+				
+		5. 问卷
+			
+			
+	   
+今日任务：
+	1. 问卷
+	
+	2. 会议室
+		- 表建好【组】
+		- 页面表格显示
+		
+		- 周六
+		- 周日
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   

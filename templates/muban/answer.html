@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>edit_survey</title>
+    <script src="/static/js/jquery-3.2.1.min.js"></script>
+    <script src="/static/js/jquery.cookie.js"></script>
+    <link href="/static/css/style.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <style>
+        .question_box ul li{
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+        <li><a href="#">首页</a></li>
+        <li><a href="/survey_list/">问卷调查</a></li>
+        <li><a href="#">答题页面</a></li>
+    </ul>
+</div>
+
+<form method="post" class="formbody" novalidate>
+    <div class="formtitle">
+        <span>问题列表</span>
+        <input name="" type="submit"  value="保存" class="pull-right btn btn-primary save_survey"/>
+    </div>
+    <ol class="forminfo">
+        {% csrf_token %}
+        {% for field in answerForm %}
+            <div class="question_box">
+                <p>{{ field.label_tag }}</p>
+                <p>{{ field }}</p>
+                <hr>
+            </div>
+        {% endfor %}
+    </ol>
+</form>
+
+</body>
+<script>
+
+</script>
+</html>

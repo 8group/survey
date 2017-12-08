@@ -73,22 +73,11 @@
             <td>{{ survey.cls__name }}</td>
             <td>{{ 0 }}/{{ survey.stu_count }}</td>
             <td><a href="/edit_survey/?survey_id={{ survey.id }}" target="rightFrame">编辑问卷</a></td>
-            <td>/student/evaluate/{{ survey.cls_id }}/{{ survey.id }}</td>
+            <td><a href="/answer/{{ survey.cls_id }}/{{ survey.id }}" target="rightFrame">/answer/{{ survey.cls_id }}/{{ survey.id }}</a></td>
             <td><a href="" target="rightFrame">查看评分</a></td>
             <td><a href="" target="rightFrame">删除</td>
         </tr>
         {% endfor %}
-
-{#        <tr>#}
-{#            <td><input name="" type="checkbox" value=""/></td>#}
-{#            <td>20130908</td>#}
-{#            <td>王金平幕僚：马英九声明字字见血 人活着没意思</td>#}
-{#            <td>admin</td>#}
-{#            <td>江苏南京</td>#}
-{#            <td>2013-09-09 15:05</td>#}
-{#            <td>已审核</td>#}
-{#            <td><a href="#" class="tablelink">查看</a> <a href="#" class="tablelink"> 删除</a></td>#}
-{#        </tr>#}
         </tbody>
     </table>
 

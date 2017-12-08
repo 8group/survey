@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>网站后台管理系统HTML模板--模板之家 www.cssmoban.com</title>
+    <link href="/static/css/style.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <script type="text/javascript" src="/static/js/jquery-3.2.1.min.js"></script>
+    <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script src="/static/js/jquery.cookie.js"></script>
+
+    <!----时间控件,基于bootstrap.min.css和jquery-3.2.1.min.js---->
+    <link rel="stylesheet" href="/static/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css">
+    <script src="/static/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/static/bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.fr.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".click").click(function () {
+                $(".tip").fadeIn(200);
+            });
+
+            $(".tiptop a").click(function () {
+                $(".tip").fadeOut(200);
+            });
+
+{#            $(".sure").click(function () {#}
+{#                $(".tip").fadeOut(100);#}
+{#            });#}
+
+            $(".cancel").click(function () {
+                $(".tip").fadeOut(100);
+            });
+        });
+    </script>
+</head>
+
+<style>
+{#    .aaa{#}
+{#        background: lightcoral;#}
+{#    }#}
+</style>
+
+
+<body>
+
+<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+        <li><a href="#">首页</a></li>
+        <li><a href="#">问卷调查</a></li>
+        <li><a href="#">会议室预定</a></li>
+    </ul>
+</div>
+
+<div class="rightinfo">
+
+    <div class="tools">
+        <ul class="toolbar1">
+            <div class="input-append date form_datetime">
+                <input size="16" type="text" value="{{ today }}" readonly class="form-control">
+                <span class="add-on"><i class="icon-th"></i></span>
+            </div>
+            <button class="btn btn-primary pull-right click">保存</button>
+        </ul>
+    </div>
+
+    {% csrf_token %}
+    <table class="table table-striped table-bordered table-hover tablelist mytablehover">
+        <thead>
+            <tr>
+            <th>会议室</th>
+            {% for phase in reserve_phase %}
+            <th>{{ phase.1 }}</th>
+            {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+        {% for meetingroom in meetingroom_list %}
+            <tr>
+                <th>{{ meetingroom.name }}</th>
+                {% for phase in reserve_phase %}
+                <td mid="{{ meetingroom.id }}" phase="{{ phase.0 }}">
+                    {% for mid,records in meetingroom_records.items %}
+                        {% if meetingroom.id == mid %}
+                            {% for record in records %}
+                                {% if record.phase == phase.0 %}
+                                    {{ record.user.username }}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+
+
+    <div class="tip">
+        <div class="tiptop"><span>提示信息</span><a></a></div>
+
+        <div class="tipinfo">
+            <span><img src="/static/images/ticon.png"/></span>
+            <div class="tipright">
+                <p>是否确认对信息的修改 ？</p>
+                <cite>如果是请点击确定按钮 ，否则请点取消。</cite>
+            </div>
+        </div>
+
+        <div class="tipbtn">
+            <input name="" type="button" class="sure" value="确定"/>&nbsp;
+            <input name="" type="button" class="cancel" value="取消"/>
+        </div>
+
+    </div>
+
+
+</div>
+
+<script type="text/javascript">
+    $('.tablelist tbody tr:odd').addClass('odd');
+
+    //时间控件初始化
+    $('.form_datetime').datetimepicker({
+        minView: "month",//设置只显示到月份
+        format: 'yyyy-mm-dd',//显示格式
+        autoclose: true,//选完自动关闭
+        todayBtn: true,
+    });
+
+    //切换日期时
+    $('.form_datetime').datetimepicker().on('changeDate', function(ev){
+         var newDate = ev.date;
+         var date_str = [newDate.getFullYear(),newDate.getMonth()+1,newDate.getDate()].join('-');
+         console.log(date_str);
+         window.location.href = '/reserve_record/?date='+date_str
+    });
+
+    //td待选择样式
+    $('td').hover(function () {
+        if(!$(this).html().trim()){
+            $(this).toggleClass("bg-info")
+        }
+
+    });
+
+    //预定
+    $('td').click(function () {
+        if(!$(this).html().trim()){
+            //为选中的td添加样式和指定的类
+            $(this).html('预约').addClass('bg-info').addClass('new_reserve')
+        }else{
+            alert('已被预定！')
+        }
+    });
+
+    //提交预定
+    $(".sure").click(function () {
+        var data = [];
+        $('td[class*="new_reserve"]').each(function (k,v) {
+            data.push({'meetingroom_id':$(this).attr('mid'),'phase':$(this).attr('phase')})
+        });
+        console.log(data);
+        var nowDate = $(".form_datetime").data("datetimepicker").getDate();
+         var date_str = [nowDate.getFullYear(),nowDate.getMonth()+1,nowDate.getDate()].join('-');
+        console.log(date_str);
+
+        if(JSON.stringify(data) == '[]'){
+            alert('请选择会议室！');
+        }
+        $.ajax({
+{#            "X-CSRFToken":$.cookie('csrftoken'),#}
+            'url':'/add_reserve/',
+            'type':'post',
+            'data':{
+                'date':date_str,
+                'data':JSON.stringify(data),
+                "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val()
+            },
+            success:function (ret) {
+                console.log(ret)
+                alert('预定成功！')
+                window.location.href = '/reserve_record/?date='+date_str
+            }
+        });
+        $(".tip").fadeOut(100);
+    });
+</script>
+</body>
+</html>
